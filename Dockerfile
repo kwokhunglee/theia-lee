@@ -191,21 +191,20 @@ ARG GITHUB_TOKEN
 RUN yarn --cache-folder ./ycache && rm -rf ./ycache && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build ;\
     yarn theia download:plugins
+	
 EXPOSE 3000
-ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins
-
-ENV GOPATH=/home/project
-ENV PATH=$PATH:$GOPATH/bin
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
 
 # RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
-RUN npm config set cache '/home/project/.npm'
-RUN npm config set prefix '/home/project/.npm'
-ENV GOPATH=/home/project/.gopath
-ENV PATH=$PATH:$GOPATH/bin
-ENV GOPROXY=https://goproxy.cn
-ENV M2_HOME=/home/project/.m2
+
+# RUN npm config set cache '/home/project/.npm' && npm config set prefix '/home/project/.npm'
+
+ENV SHELL=/bin/bash \
+    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    GOPATH=/home/project/.gopath \
+    PATH=$PATH:$GOPATH/bin \
+    GOPROXY=https://goproxy.cn \
+    M2_HOME=/home/project/.m2
 
 ENTRYPOINT [ "yarn", "theia", "start", "/home/project", "--hostname=0.0.0.0" ]
